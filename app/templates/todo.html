@@ -73,7 +73,7 @@
         form = $('form');
 
     if(num === 0){
-      $('input[type="text"]').val('read the source code, luke');
+      $('input[type="text"]').val('enter what the other person is thinking.');
     }
 
     form.submit(function(e){
@@ -86,7 +86,7 @@
         form.attr('action') + '#todos',
         form.serializeArray(),
         function(response, status){
-          $('input[type="submit"]').attr('disabled', false);
+          $('input[type="submit"]').attr('disabled', true);
         });
 
       e.preventDefault();

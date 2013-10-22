@@ -6,38 +6,72 @@ application.
 """
 
 from google.appengine.api import mail
-
-from flask import Blueprint, url_for, render_template, request, redirect
-from models import Todo
+from decorators import login_required
+from flask import Blueprint, url_for, render_template, request, redirect, jsonify
+from models import Todo, Counter
 from forms import TodoForm, EmailForm
+import Queue
 
 views = Blueprint('views', __name__)
+counter = Counter()
+total_users = 1
+queue = []
+games = {}
+current_players = {}
 
 
 @views.route('/')
 def index():
     """Render website's index page."""
-    return render_template('index.html')
+    # return render_template('index.html')
+    counter.increment()
+    return jsonify({"hello":"world", "count":counter.get_counter()})
 
 
-@views.route('/todo/')
-def todo_list():
+
+@views.route('/game/{user_id}')
+def todo_list(user_id):
     """Simple todo page."""
+    if user_id is None:
+        user_id = total_users
+        total_users += 1
     form = TodoForm()
+    if len(queue) is 0:
+        queue.append(user_id)
+        render_template('wait.html',user_id=user_id)
+    else:
+        opponent_id = queue[0]
+        queue.remove(opponent_id)
+        game= Game(user_id,opponent_id)
+        games[game.get_id()] = game
+        current_players[user_id] = game.get_id()
+        current_players[user_id] = game.get_id()
     todos = Todo.all().order('-created_at')
+    for todo in todos:
+        print todo.text
+    counter.increment()
+    print "hello world, ", counter.get_counter()
     return render_template('todo.html', form=form, todos=todos)
 
+@views.route('/game/leave/{user_id}/{game_id}')
+def leave_game(user_id,game_id):
+    game = games[game_id]
+    #TODO: Store game state.
+    games.remove(game_id)
+    current_players.pop(user_id)
 
-@views.route('/todo/add', methods=["POST"])
+
+@views.route('/todo/add/{user_id}', methods=["POST"])
 def add_todo():
     """Add a todo."""
     form = TodoForm()
+
     if request.method == 'POST' and form.validate_on_submit():
         todo = Todo(text=form.todo.data)
         todo.save()
     return redirect(url_for('todo_list'))
 
-
+@login_required
 @views.route('/email/')
 def email():
     """Render a form for sending email."""
@@ -93,3 +127,4 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+

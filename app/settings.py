@@ -1,10 +1,8 @@
 """
 You can store your app's configuration settings here.
 
-Generate good secret keys:  http://flask.pocoo.org/docs/quickstart/#sessions
-    >>> import os
-    >>> os.urandom(24)
-    '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
 """
-
-SECRET_KEY = 'this_obviously_should_be_changed_using_os.urandom()'
+SECRET_KEY = '\xfb\xd3\xc1$\xa1^\xfa\xa8\xac4\xed\x02s>\xa6\xe2M\x85\xd9\xee\x85p\xb9\xdd'
+DEBUG=True
+CSRF_ENABLED=True
+CSRF_SESSION_LKEY='dev_key_h8asSNJ9s9=+'
