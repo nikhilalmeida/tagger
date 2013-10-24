@@ -18,5 +18,5 @@ PASSWORD = 'default'
 
 tagger_root = dirname(dirname(realpath(__file__)))
 
-csv_read_file = join(tagger_root, 'test_read.txt')
-csv_write_file = join(tagger_root, 'test_write.txt')
+csv_read_file = join(tagger_root, 'selftag_reada{}.txt'.format('a'))
+csv_write_file = join(tagger_root, 'tag_results.txt')

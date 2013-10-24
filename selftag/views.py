@@ -42,14 +42,12 @@ def tag_images():
     global LIST_INDEX
 
     # create a sample read_csv_file using the image_list_data at the top
-    list_to_csv(csv_read_file, sample_data_list)
+    # list_to_csv(csv_read_file, sample_data_list)
 
     # read the read_csv_file into a list
     IMAGE_DATA_LIST = csv_to_list(csv_read_file)
 
     image_data = IMAGE_DATA_LIST[LIST_INDEX]
-    # parsing the taboo words list to display correctly
-    image_data[1] = image_data[1].strip('[]').replace('\'', '')
 
     new_image_data = image_data[:]
     for value in request.form.values():
@@ -63,6 +61,6 @@ def tag_images():
             list_to_csv(csv_write_file, CSV_WRITE_DATA)
             return render_template('done.html')
         image_data = IMAGE_DATA_LIST[LIST_INDEX]
-        image_data[1] = image_data[1].strip('[]').replace('\'', '')
+
     return render_template('show_image.html', image_data=image_data)
 
