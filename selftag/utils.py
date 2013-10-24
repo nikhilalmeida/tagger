@@ -33,5 +33,3 @@ def csv_to_list(filename):
             items = [field[0], field[1]]
             result.append([item.strip() for item in items])
         return result
-        # return [[item.strip() for item in field] for field in reader
-        #         if field]
